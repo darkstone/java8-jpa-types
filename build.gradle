@@ -1,0 +1,63 @@
+plugins {
+    id "com.jfrog.bintray" version "1.7.1"
+}
+
+apply plugin: 'java'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+group = 'org.andfc.commons.jpa'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+        }
+    }
+}
+
+dependencies {
+    compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.0.Final'
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+// add javadoc/source jar tasks as artifacts
+artifacts {
+    archives sourcesJar, javadocJar
+}
+
+bintray {
+    user = bintray_user //this usually comes from gradle.properties file in ~/.gradle
+    key = bintray_apikey //this usually comes from gradle.properties file in ~/.gradle
+    publications = ['mavenJava']
+    dryRun = false
+    publish = true
+    pkg {
+        licenses = ['Apache 2.0']
+        name = project.name
+        desc = 'Simple JPA 2.1 types to help with java 8'
+    }
+
+}
+
