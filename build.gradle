@@ -11,7 +11,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 group = 'org.andfc.commons.jpa'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 
 repositories {
     jcenter()
@@ -54,9 +54,14 @@ bintray {
     dryRun = false
     publish = true
     pkg {
-        licenses = ['Apache 2.0']
+        licenses = ['Apache-2.0']
         name = project.name
         desc = 'Simple JPA 2.1 types to help with java 8'
+        repo = 'maven'
+        vcsUrl = 'git@github.com:darkstone/java8-jpa-types.git'
+        version {
+            name = project.version
+        }
     }
 
 }
